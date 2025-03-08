@@ -13,6 +13,7 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 from pathlib import Path
 import environ
 from datetime import timedelta
+import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -47,7 +48,7 @@ DJANGO_APPS = [
 ]
 THIRD_PARTY_APPS = [
     "rest_framework",
-    "drf_yasg",
+    "drf_spectacular",
     "corsheaders",
     "rest_framework_simplejwt",
 ]
@@ -72,6 +73,10 @@ MIDDLEWARE = [
 ]
 
 ROOT_URLCONF = "config.urls"
+
+AUTH_USER_MODEL = (
+    "tracker.CustomUser"  # Settings for django that there is custom user model made
+)
 
 TEMPLATES = [
     {
@@ -132,7 +137,18 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
 
+PROJECT_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+APP_DIR = os.path.join(PROJECT_DIR, "tracker")
+
 STATIC_URL = "static/"
+
+STATICFILES_DIRS = [
+    os.path.join(APP_DIR, "static"),  # Note the trailing slash
+]
+STATIC_ROOT = os.path.join(PROJECT_DIR, "static")
+
+MEDIA_URL = "/media/"
+MEDIA_ROOT = os.path.join(APP_DIR, "media/")
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
@@ -140,12 +156,25 @@ STATIC_URL = "static/"
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 # Swagger Settings
-
-SWAGGER_SETTINGS = {
-    "SECURITY_DEFINITIONS": {
-        "Bearer": {"type": "apiKey", "name": "Authorization", "in": "header"}
+SPECTACULAR_SETTINGS = {
+    "TITLE": "Tracker",
+    "DESCRIPTION": "Ride Tracker",
+    "VERSION": "2.0.0",
+    "SERVE_INCLUDE_SCHEMA": False,
+    # OTHER SETTINGS
+    "SWAGGER_UI_SETTINGS": {
+        "persistAuthorization": True,  # Keeps JWT token saved in Swagger UI
     },
-    "USE_SESSION_AUTH": False,
+    "SECURITY_DEFINITIONS": {
+        "JWT Token": {
+            "type": "http",
+            "scheme": "bearer",
+            "bearerFormat": "Bearer",
+        },
+    },
+    "AUTHENTICATION_CLASSES": [
+        "rest_framework_simplejwt.authentication.JWTAuthentication",
+    ],
 }
 
 # Rest Framework Settings
@@ -155,6 +184,7 @@ REST_FRAMEWORK = {
         "rest_framework_simplejwt.authentication.JWTAuthentication",
     ),
     "DEFAULT_PERMISSION_CLASSES": ("rest_framework.permissions.IsAuthenticated",),
+    "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema",
 }
 
 
