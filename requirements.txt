@@ -10,4 +10,4 @@ uvicorn[standard]
 psycopg2-binary>=2.9.1
 
 # Documentation
-drf-yasg==1.21.7
+drf-spectacular>=0.24.2
