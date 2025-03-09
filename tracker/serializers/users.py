@@ -35,3 +35,9 @@ class RegisterCreateSerializer(serializers.ModelSerializer):
         validated_data.pop("re_password")
         user = User.objects.create_user(**validated_data)
         return user
+
+
+class UserSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ["id", "role", "first_name", "last_name", "email", "phone_number"]

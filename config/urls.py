@@ -16,6 +16,7 @@ Including another URLconf
 """
 
 from django.contrib import admin
+from django.conf import settings
 from django.urls import path, include
 from rest_framework_simplejwt.views import (
     TokenObtainPairView,
@@ -27,6 +28,7 @@ from drf_spectacular.views import (
     SpectacularRedocView,
     SpectacularSwaggerView,
 )
+import debug_toolbar
 
 urlpatterns = [
     path("admin/", admin.site.urls),
@@ -46,3 +48,9 @@ urlpatterns = [
         name="redoc",
     ),
 ]
+
+# if settings.DEBUG:
+#     urlpatterns += [path("__debug__/", include(debug_toolbar.urls))]
+
+if settings.DEBUG:
+    urlpatterns += [path("silk/", include("silk.urls", namespace="silk"))]
