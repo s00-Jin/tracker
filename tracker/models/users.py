@@ -8,7 +8,7 @@ from django.db import models
 ROLE_CHOICE = [
     ("admin", "Admin"),
     ("rider", "Rider"),
-    ("customer", "Customer"),
+    ("driver", "Driver"),
 ]
 
 
