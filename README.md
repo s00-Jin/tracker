@@ -78,3 +78,34 @@ docker-compose exec <container_id or name> pytest
 
 ```
 
+
+
+## Bonus SQL
+
+```sh
+WITH RideDurations AS (
+    SELECT
+        r.id AS ride_id,
+        r.id_driver AS driver_id,
+        DATE_TRUNC('month', pickup_event.created_at) AS month,
+        EXTRACT(EPOCH FROM (dropoff_event.created_at - pickup_event.created_at)) / 3600 AS ride_duration_hours
+    FROM Ride r
+    JOIN RideEvent pickup_event 
+        ON r.id = pickup_event.id_ride 
+        AND pickup_event.description = 'Status changed to pickup'
+    JOIN RideEvent dropoff_event 
+        ON r.id = dropoff_event.id_ride 
+        AND dropoff_event.description = 'Status changed to dropoff'
+)
+SELECT 
+    TO_CHAR(rd.month, 'YYYY-MM') AS month,
+    CONCAT(u.first_name, ' ', u.last_name) AS driver,
+    COUNT(rd.ride_id) AS count_of_trips_over_1_hr
+FROM RideDurations rd
+JOIN CustomUser u ON rd.driver_id = u.id
+WHERE rd.ride_duration_hours > 1
+GROUP BY rd.month, driver
+ORDER BY rd.month, count_of_trips_over_1_hr DESC;
+
+
+```
