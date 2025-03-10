@@ -52,7 +52,6 @@ THIRD_PARTY_APPS = [
     "corsheaders",
     "rest_framework_simplejwt",
     "django_filters",
-    "debug_toolbar",
     "silk",
 ]
 
@@ -73,7 +72,6 @@ MIDDLEWARE = [
     # Installed app middleware
     "corsheaders.middleware.CorsMiddleware",
     "django.middleware.common.CommonMiddleware",
-    "debug_toolbar.middleware.DebugToolbarMiddleware",
     "silk.middleware.SilkyMiddleware",
 ]
 
@@ -214,9 +212,3 @@ SIMPLE_JWT = {
     "SLIDING_TOKEN_OBTAIN_SERIALIZER": "rest_framework_simplejwt.serializers.TokenObtainSlidingSerializer",
     "SLIDING_TOKEN_REFRESH_SERIALIZER": "rest_framework_simplejwt.serializers.TokenRefreshSlidingSerializer",
 }
-
-# Settings for debug tool
-import socket
-
-hostname, _, ips = socket.gethostbyname_ex(socket.gethostname())
-INTERNAL_IPS = ["127.0.0.1", "localhost"] + [ip[:-1] + "1" for ip in ips]
