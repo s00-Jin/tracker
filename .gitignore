@@ -1,2 +1,6 @@
 .env
 /static
+
+__pycache__/
+*.pyc
+*.pyo
