@@ -28,7 +28,6 @@ from drf_spectacular.views import (
     SpectacularRedocView,
     SpectacularSwaggerView,
 )
-import debug_toolbar
 
 urlpatterns = [
     path("admin/", admin.site.urls),
@@ -49,8 +48,6 @@ urlpatterns = [
     ),
 ]
 
-# if settings.DEBUG:
-#     urlpatterns += [path("__debug__/", include(debug_toolbar.urls))]
 
 if settings.DEBUG:
     urlpatterns += [path("silk/", include("silk.urls", namespace="silk"))]
