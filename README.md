@@ -38,6 +38,11 @@ docker-compose exec <container_id or name> python manage.py createsuperuser
 ```
 when prompted to add role input "admin"
 
+## Create Sample data for testing
+```sh
+docker-compose exec <container_id or name> bash /app/seed_data.sh
+```
+
 ## Access API Documentation
 Once the setup is complete, visit:
 [http://localhost/api/schema/swagger-ui/](http://localhost/api/schema/swagger-ui/)
@@ -64,7 +69,12 @@ In testing the one that sort by distance used Postman.  A sample curl is given b
 ```sh
 curl --location 'http://localhost/v1/rides/?lat=37.7749&lon=-122.4194' \
 --header 'Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzQxNjAyNTc3LCJpYXQiOjE3NDE1OTg5NzcsImp0aSI6IjVlNDZiZDAyZjU5NDRkMDY5ZjcxOGM1ZjljNTMxYTNmIiwidXNlcl9pZCI6MX0.fY8pICMK1Sv3Vnb5c5vEl-BW-bVw9XB8HOWpJqmhr6I'
+
 ```
 
+## To run the pytest
+```sh
+docker-compose exec <container_id or name> pytest
 
+```
 
